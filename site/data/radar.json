@@ -1,0 +1,22 @@
+{
+  "name": "radar",
+  "title": "AI 变现雷达",
+  "en": "AI Radar",
+  "date": "2026-09-18",
+  "total": 60,
+  "sections": [
+    {
+      "zh": "AI 工具与变现",
+      "en": "AI & Monetization",
+      "count": 30
+    },
+    {
+      "zh": "自媒体与个人成长",
+      "en": "Creator & Growth",
+      "count": 30
+    }
+  ],
+  "skills_written": 5,
+  "gradient": "linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#3730a3 100%)",
+  "tag": "AI RADAR · DAILY"
+}
