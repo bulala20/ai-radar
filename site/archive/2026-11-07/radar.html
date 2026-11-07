@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 变现雷达 · 每日信号</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f6f7fb;--card:#fff;--ink:#1a1f36;--muted:#6b7280;--line:#e5e7eb;--soft:#f1f3f9}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.hero{color:#fff;padding:56px 24px 44px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 20% 20%,rgba(255,255,255,.10) 0,transparent 40%),radial-gradient(circle at 80% 70%,rgba(255,255,255,.08) 0,transparent 45%);pointer-events:none}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.hero-tag{display:inline-block;font-size:12px;letter-spacing:2px;background:rgba(255,255,255,.16);padding:5px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-size:34px;font-weight:800;letter-spacing:1px;margin-bottom:10px}
+.hero-sub{font-size:15px;opacity:.85;margin-bottom:24px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:26px;font-size:14px}
+.hero-meta .pill{background:rgba(255,255,255,.15);padding:6px 14px;border-radius:18px}
+.hero-meta .pill b{font-size:20px;font-weight:800;margin-right:4px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.stat{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:14px 10px;text-align:center;backdrop-filter:blur(4px)}
+.stat-num{font-size:26px;font-weight:800;color:#fff}
+.stat-num::before{content:"";display:block;width:28px;height:3px;background:var(--accent);border-radius:2px;margin:0 auto 8px}
+.stat-label{font-size:12px;opacity:.9;margin-top:4px}
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;gap:6px;padding:10px 16px;overflow-x:auto;justify-content:center;flex-wrap:wrap}
+.nav-item{display:inline-flex;align-items:center;gap:6px;text-decoration:none;padding:7px 14px;border-radius:20px;font-size:13px;color:var(--ink);background:var(--soft);border:1px solid transparent;transition:.18s;white-space:nowrap}
+.nav-item:hover{border-color:var(--accent);color:var(--accent)}
+.nav-item.active{background:var(--accent);color:#fff}
+.nav-en{font-size:11px;opacity:.55}
+.nav-cnt{font-size:11px;background:rgba(0,0,0,.08);padding:1px 7px;border-radius:10px;font-weight:700}
+.nav-item.active .nav-cnt{background:rgba(255,255,255,.25)}
+.wrap{max-width:1200px;margin:0 auto;padding:36px 20px 60px}
+.sec{margin-bottom:48px;scroll-margin-top:64px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-bar{width:6px;height:26px;background:var(--accent);border-radius:3px}
+.sec-head h2{font-size:22px;font-weight:800}
+.sec-en{font-size:13px;font-weight:500;color:var(--muted);margin-left:6px}
+.sec-count{margin-left:auto;font-size:13px;color:var(--accent);font-weight:700;background:var(--soft);padding:4px 12px;border-radius:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px;display:flex;flex-direction:column;gap:10px;transition:.2s;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);opacity:.85}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(30,27,75,.10);border-color:var(--accent)}
+.card-top{display:flex;align-items:center;gap:10px}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:24px;padding:0 8px;border-radius:12px;color:#fff;font-size:12px;font-weight:800}
+.date{font-size:12px;color:var(--muted)}
+.title{font-size:15.5px;font-weight:700;line-height:1.45;color:var(--ink)}
+.summary{font-size:13px;color:#4b5563;line-height:1.6;flex:1}
+.card-foot{display:flex;align-items:center;gap:8px;margin-top:4px}
+.chip{font-size:11px;color:#6b7280;background:var(--soft);padding:3px 10px;border-radius:10px;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.link{margin-left:auto;font-size:12px;font-weight:600;color:var(--accent);text-decoration:none;padding:4px 10px;border:1px solid var(--accent);border-radius:14px;transition:.15s}
+.link:hover{background:var(--accent);color:#fff}
+.foot{max-width:1200px;margin:0 auto;padding:28px 20px 50px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line)}
+.foot b{color:var(--ink)}
+.foot a{color:#3730a3;text-decoration:none}
+.note{max-width:1200px;margin:0 auto;padding:14px 18px;color:var(--muted);font-size:11.5px;line-height:1.7;background:#fffbeb;border:1px solid #fde68a;border-radius:10px}
+.back-home{display:inline-block;margin:14px 20px 0;padding:6px 14px;background:#fff;border:1px solid var(--line);border-radius:18px;font-size:13px;color:#3730a3;text-decoration:none}
+.back-home:hover{background:#3730a3;color:#fff}
+@media(max-width:720px){.hero{padding:40px 18px 32px}.hero h1{font-size:26px}.stats{grid-template-columns:repeat(5,1fr);gap:6px}.stat{padding:10px 4px}.stat-num{font-size:18px}.stat-label{font-size:10px}.grid{grid-template-columns:1fr}.nav{justify-content:flex-start}}
+
+.gtag{margin-left:auto;font-size:11px;border:1px solid;padding:1px 8px;border-radius:10px;font-weight:700}
+.reason{font-size:12px;color:#92400e;background:#fffbeb;border-radius:8px;padding:6px 10px}
+.stats{grid-template-columns:repeat(2,1fr)}
+
+.hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#3730a3 100%)}</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">AI RADAR · DAILY SIGNALS</span>
+    <h1>AI 变现雷达 · 每日信号</h1>
+    <div class="hero-sub">监控 AI 玩法与自媒体成长内容，S/A/B/C 四级筛选，高价值方法论自动沉淀为技能。</div>
+    <div class="hero-meta">
+      <span class="pill">更新 <b>11月07日 10:31</b></span>
+      <span class="pill">总条数 <b>60</b></span>
+      <span class="pill"><b style="color:#dc2626">S</b> 可复制实操</span><span class="pill"><b style="color:#ea580c">A</b> 高价值洞见</span><span class="pill"><b style="color:#2563eb">B</b> 一般资讯</span><span class="pill"><b style="color:#6b7280">C</b> 低价值</span>
+    </div>
+    <div class="stats">
+<div class="stat" style="--accent:#3730a3"><div class="stat-num">30</div><div class="stat-label">AI 工具与变现</div></div>
+<div class="stat" style="--accent:#b45309"><div class="stat-num">30</div><div class="stat-label">自媒体与个人成长</div></div>
+    </div>
+  </div>
+</header>
+<a class="back-home" href="../index.html">← 返回首页</a>
+<nav class="nav">
+<a class="nav-item" href="#ai" style="--accent:#3730a3"><span class="nav-zh">AI 工具与变现</span><span class="nav-en">AI &amp; Monetization</span><span class="nav-cnt">30</span></a>
+<a class="nav-item" href="#media" style="--accent:#b45309"><span class="nav-zh">自媒体与个人成长</span><span class="nav-en">Creator &amp; Growth</span><span class="nav-cnt">30</span></a>
+</nav>
+<main class="wrap">
+
+  <section id="ai" class="sec">
+    <div class="sec-head" style="--accent:#3730a3">
+      <span class="sec-bar"></span>
+      <h2>AI 工具与变现<span class="sec-en">/ AI &amp; Monetization</span></h2>
+      <span class="sec-count">30 条</span>
+    </div>
+    <div class="grid">
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">10月28日 周三 16:04</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">当即梦把剧本、导演和剪辑放进同一个工作室，我们看到了视频生成的下一步</h3>
+      <p class="summary">对于短剧创作者来说，最不缺的可能就是新的故事灵感。 在日常创作中，一个新的人物设定、一段有冲突的情节，甚至刷到的一条社会新闻，都可能成为下一部短剧的起点。 但短…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373066" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">10月29日 周四 08:05</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">苹果发触屏笔记本，最高 11 万元；DeepSeek V5 模型代码现身；宇树首发财报，净利增 270%</h3>
+      <p class="summary">苹果发布首款触屏 MacBook Pro，顶配超 11 万元 北京时间 10 月 29 日，苹果发布全新 MacBook Pro，首次为 Mac 引入屏幕触控和…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373085" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">10月30日 周五 13:49</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">TRAE 开发者个人助理，打响 AI Coding 的下半场</h3>
+      <p class="summary">作者｜Cynthia 编辑｜郑玄 过去两年，AI Coding 最令人兴奋的时刻，大基本止步于代码生成的那一秒。 一句话生成页面，几分钟搭出原型，一个开发者用半…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373190" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">10月31日 周六 08:03</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">苹果官宣 Apple 智能接入阿里千问；DeepSeek 完成第二轮 1055 亿元融资，估值达 6155 亿元；英特尔股价开盘跌超 30%｜极客早知道</h3>
+      <p class="summary">国行 Apple 智能确定上线时间：11 月开放测试，千问接入 Siri 10 月 31 日，苹果宣布，国行 Apple 智能首批功能将于 11 月 4 日随 …</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373220" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月1日 周日 18:03</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">个人灵光 2.0 实测：个人 AI 助理的机会和门槛｜AI 上新</h3>
+      <p class="summary">作者｜汤一涛 编辑｜靖宇 10 月 21 日的 Meta 财报会上，扎克伯格披露了一组关于个人智能体 Muse 的关键数据：超过 1000 万人设置了 Muse…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373249" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月2日 周一 08:27</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">​传苹果逐步淘汰非触控 MacBook Pro；谷歌 AI 被指正切断互联网流量；赛力斯：问界全面进入欧洲市场</h3>
+      <p class="summary">&amp;amp;nbsp; 苹果 CEO：不会为了做 AI 而做产品 苹果 CEO 约翰&amp;amp;middot;特努斯近日接受采访时，为苹果当前在人工智能领域的布局进…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373252" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月3日 周二 08:40</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">马斯克回应 Grok Bot 额度消耗过快：服务成本高到难以为继；Altman 称个人内存浪费遭全网声讨；《影之刃零》销量破 400 万份</h3>
+      <p class="summary">Anthropic 更新 IPO 招股书：第三季度营收近 170 亿美元，算力承诺达 8954 亿美元 11 月 2 日，Anthropic 向美国证券交易委员…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373358" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月3日 周二 19:54</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">拿下近亿美元融资后，他们造了个开放动态真实世界的「行动伙伴」</h3>
+      <p class="summary">作者｜苏子华 编辑｜郑玄 &amp;amp;nbsp; 博尔赫斯写过一则著名的寓言。一个帝国的制图师们绘制了一张与领土等大的地图，精确到每一寸土地、每一条河流。后代人发…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373424" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月4日 周三 08:28</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">国行版苹果 AI 开始测试；ChatGPT 搜索量已达到谷歌 20%；Seedance 被曝五成收入来自海外｜极客早知道</h3>
+      <p class="summary">国行 Apple 智能开始测试：iOS 27.3 首个开发者 Beta 版已推送 11 月 4 日，苹果向开发者推送 iOS 27.3 首个 Beta 版，国行…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373427" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月5日 周四 08:45</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">Apple 智能国行上线，苹果大涨超 6% 重返美股市值第一；英伟达显卡订单排长队，中国客户预计只能拿到 1%；字节限制员工使用个人 AI｜极客早知道</h3>
+      <p class="summary">Apple 智能国行上线，苹果大涨超 6% 重返美股市值第一 11 月 4 日，Apple 智能伴随 iOS 27.3 的 Developer Beta 向中国…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373494" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月5日 周四 17:15</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">一个人用得好 AI，为什么一家公司却用不好？</h3>
+      <p class="summary">作者｜老 S 编辑｜郑玄 今天的 Agent，已经能够独立完成不少具体的工作。 写方案、写代码、做分析报告，过去可能需要员工花费几天才能完成的任务，如今 Age…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373541" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月5日 周四 17:19</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">世界互联网大会领先科技奖背后，Qoder 凭什么拿下中国 AI 编程市场第一</h3>
+      <p class="summary">作者｜Cynthia 编辑｜郑玄 2026 年 11 月，每年乌镇世界互联网大会期间举办的领先科技奖，已经走到第十年。 作为面向全球征集互联网领域领先成果的国际…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373542" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 20:13</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">估值 400 亿美元，美国公司，终于做出了中国开源模型的竞对</h3>
+      <p class="summary">作者｜Wildcard 编辑｜靖宇11 月 5 日，OpenAI 前 CTO Mira Murati 创立的 Thinking Machines Lab（简称 …</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373637" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月7日 周六 08:48</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">马斯克官宣 Cybertruck 停产：销量不足预期一成；李飞飞团队推出世界模型「模拟掌机」；小米汽车成立国际事业部｜极客早知道</h3>
+      <p class="summary">电动皮卡中道崩殂！马斯克宣布 Cybertruck 明年逐步停产：销量仅达预期一成 11 月 6 日消息，特斯拉 CEO 马斯克在社交平台 X 发文表示，公司将…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373639" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月7日 周六 09:19</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">聚焦币安失窃案，追偿链上资产有多难？| 巴伦菁英月谈会</h3>
+      <p class="summary">本期《巴伦菁英月谈会》对话Nano Bit CEO、《区块链和数字资产》一书作者蔡凯龙博士，以及钛媒体集团合伙人、链得得ChainDD总裁李非凡，复盘本次事件，…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="钛媒体">钛媒体</span>
+        <a class="link" href="https://www.tmtpost.com/8196993.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">10月28日 周三 15:37</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">斯坦福的研究，红海的珊瑚，与一个中国模型</h3>
+      <p class="summary">2026 年 9 月 4 日，又一年柏林国际消费电子展 IFA 大会开幕，会展中心的创新舞台座无虚席。 IFA 2026 的开幕主题演讲题目是《个人 AI 时代…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373059" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">10月29日 周四 15:09</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">大众把三年在中国攒的家底，打包成了一颗「星」</h3>
+      <p class="summary">&amp;amp;nbsp; 头图来源：极客公园 10 月 28 日，合肥，大众汽车集团（中国）办了自己的第一次技术日。 这场发布会的主角叫「VEGA」，名字取自织女星…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373086" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">10月30日 周五 08:15</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">Google 母集团市值蒸发 5000 亿美元创纪录；苹果高管回应新 iPad mini 60Hz 刷新率；因电池问题，理想 MEGA 退一赔一｜极客早知道</h3>
+      <p class="summary">谷歌市值创纪录蒸发 5000 亿美元 AI 侵蚀营收 Alphabet Inc 股价一度下跌逾 13%，市值蒸发逾 5000 亿美元，单日市值缩水规模创公司纪录…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373154" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">10月31日 周六 06:26</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">国行 Apple 智能官网正式上线：千问接入，11 月推送</h3>
+      <p class="summary">头图图片来源：Apple10 月 31 日，苹果中国官网的 Newsroom 发布新闻稿《Apple 智能即将登陆中国》，给了一张具体的时间表：11 月 4 日…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373238" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月1日 周日 17:57</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">DeepSeek，怎么就变成了一条「大肥鱼」</h3>
+      <p class="summary">作者｜Moonshot 编辑｜靖宇 最近，B 站评论区闹起了「鱼灾」。 先是有人开了个「Claude 大小姐在运营」的账号，让 AI 负责选题、制作和运营。第二…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373248" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月3日 周二 15:11</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">心言巴布「Bubbo 1」：一台机器人，如何成为家人</h3>
+      <p class="summary">&amp;amp;nbsp; 头图来源：心言机器人 2026 年 10 月 29 日，心言机器人正式发布具身家庭智能体「巴布（Bubbo 1）」。 这台毛绒外形的机器人…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373399" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月5日 周四 21:15</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">极客公园创新大会 2027 首批嘉宾揭晓！</h3>
+      <p class="summary">今年 12 月 5 日&amp;amp;mdash;6 日，北京 798艺术区，还是老地方。 极客公园创新大会（GEEKPARK IF），我们又要见面了。 IF 将进入…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373553" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月6日 周五 09:01</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">中期选举后美国芯片股重挫，纳指单日暴跌 5.52%；民主党宣布推动《禁止人工智能法案》；OpenAI 推出 GPT-6 Cyber</h3>
+      <p class="summary">芯片股惨遭重挫，华尔街迎来 1896 年以来中期选举后表现最差的第二个交易日 据路透社报道，美国民主党在国会中期选举中大胜，引发投资者对 AI 监管加强、数据中…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373554" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月6日 周五 20:09</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">AI 时代没有标准答案的问题，我们面对面聊</h3>
+      <p class="summary">我们刚刚官宣了极客公园创新大会 2027 的首批嘉宾。 今天，再来揭晓「小场深谈」的最新进展。 10 月底，我们在「小场深谈」的预热文章里做了一次调研，请大家投…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373636" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月7日 周六 09:51</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">AI应用加速渗透，内容产业迎价值重估</h3>
+      <p class="summary">近期，人工智能（AI）应用端不断催化，内容产业商业化进程进一步提速。短剧、游戏、出版与IP等多个领域均出现积极变化，AI技术正加速渗透内容产业链。业内人士认为，…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="36氪快讯">36氪快讯</span>
+        <a class="link" href="https://www.36kr.com/newsflashes/4059017079296903" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">10月29日 周四 02:27</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">「推翻」乔布斯的触屏 MacBook 来了，22999 元起</h3>
+      <p class="summary">搭载 PROLED XDR 显示屏的 MacBook Pro｜图片来源：Apple 2010 年 10 月 20 日，乔布斯在苹果「Back to the Ma…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="极客公园">极客公园</span>
+        <a class="link" href="http://www.geekpark.net/news/373084" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月4日 周三 17:01</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">奥运赛事首次来到非洲，AI 也学着「入乡随俗」</h3>
+      <p class="summary">用最硬核的技术，给在地文化最充分的尊重#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="爱范儿">爱范儿</span>
+        <a class="link" href="https://www.ifanr.com/1687242?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月4日 周三 18:34</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">Anthropic微微发力，AI中转站的天就要塌了？</h3>
+      <p class="summary">就像发邮件加上数字签名一样#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="爱范儿">爱范儿</span>
+        <a class="link" href="https://www.ifanr.com/1687702?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月4日 周三 20:25</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">你不知道的客户端开发：AI 时代下的选型、原生与借力</h3>
+      <p class="summary">选型选得好只是锦上添花，最终还是要先把用户最真实的需求解决好。查看全文</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="少数派">少数派</span>
+        <a class="link" href="https://sspai.com/post/117713" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月5日 周四 01:30</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">实测 iPhone 国行 AI：有亮点有槽点，还有一个惊喜点</h3>
+      <p class="summary">这次你一定要用上 Apple 智能！#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="爱范儿">爱范儿</span>
+        <a class="link" href="https://www.ifanr.com/1687733?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+    </div>
+  </section>
+
+  <section id="media" class="sec">
+    <div class="sec-head" style="--accent:#b45309">
+      <span class="sec-bar"></span>
+      <h2>自媒体与个人成长<span class="sec-en">/ Creator &amp; Growth</span></h2>
+      <span class="sec-count">30 条</span>
+    </div>
+    <div class="grid">
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月5日 周四 15:01</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">实体生意赚钱完整方法论</h3>
+      <p class="summary">实体生意难做，多数不是缺客户，而是没有一套能落地的目标体系。定目标、拆目标、做策划、抓执行，四步把年入百万拆成 [&amp;#8230;]</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="运营派">运营派</span>
+        <a class="link" href="https://www.yunyingpai.com/user/1068749.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 11:34</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">AI毛绒翻车惨案频发，这届消费者开始抵制“AI设计潮玩”？</h3>
+      <p class="summary">用 AI 效果图先上链接、实物却造型潦草，社交媒体上的毛绒翻车案例越来越多，“团队沾 AI”成了声讨关键词，一 [&amp;#8230;]</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="运营派">运营派</span>
+        <a class="link" href="https://www.yunyingpai.com/news/1068866.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 11:47</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">Agent 运作像开厨房：从点单到出菜</h3>
+      <p class="summary">把 Agent 比作餐厅厨房，复杂概念瞬间通俗易懂。本文用“接单、查料、计划、动手、检查、出菜、复盘”的厨房流程，拆解 Prompt、RAG、Function …</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/ai/6489955.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 11:47</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">我还没看到 AI 社交的天花板</h3>
+      <p class="summary">AI 正在重塑婚恋社交的产品逻辑与成本结构。从冷启动陪聊、匹配算法精细化到 AI 红娘与数字分身，本文基于一场深度访谈，拆解 AI 在社交产品中的真实作用与边界…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/ai/6489920.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 11:47</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">从 0 到 1 一个人做 App：我把 AI 变成了我的执行团队</h3>
+      <p class="summary">一位产品经理妈妈用AI在两个月内独立跑通App全流程：从被AI稀释核心能力的恐慌，到用AI实现个人闭环的兴奋。她分享如何避开“许愿池”陷阱、定义产品灵魂与用户画…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/ai/6489851.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 12:43</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">AI产品经理转型指南：六大方向与能力模型</h3>
+      <p class="summary">这两年，产品经理圈子里最让人焦虑的事情之一，大概就是要不要转型做AI产品经理。 打开招聘软件，AI产品经理的岗位越来越多，月薪三四万的很常见，有些资深岗位甚至能…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/pmd/6490019.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 14:38</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">真人视频社交赛道深度测评：桃夭、玩洽、知聊、果尤的产品逻辑与差异化路径</h3>
+      <p class="summary">陌生人社交的痛点已从“找不到人”变成“找不到真人”。本文横向测评桃夭、玩洽、知聊、果尤四款视频社交产品，从定位、功能、风控到场景适配逐一拆解，揭示它们如何以差异…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/evaluating/6489573.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 14:39</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">把自己当产品迭代：硬件被看见，软件被记住，智能被长久选择</h3>
+      <p class="summary">把婚恋当事人比作智能硬件，硬件层管颜值健康，软件层管知识见识，智能层管情绪边界。本文用产品思维拆解婚恋三层架构，从初次见面到长期相处，教你如何不拉胯、有内容、不…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/share/6480126.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 14:48</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">6个大学生做了个 AI 旅游网站，1000万人用它决定去哪儿玩</h3>
+      <p class="summary">Tryp.com 是一个 AI 旅游平台，用户只需输入出发地、时间和预算，系统就能推荐可预订的行程，无需先决定目的地。2019年由6名葡萄牙大学生创立，累计用户…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/chuangye/6486507.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 14:48</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">AI 把软件变成免费之后，这八种生意最难被抄走</h3>
+      <p class="summary">产品几秒钟就能被复制，真正抄不走的是产品之外的东西。Greg Isenberg 把机会拆成八个方向：原子生意、许可、注意力、时机、归属感、流动性、独有数据和按结…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/chuangye/6490035.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 14:49</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">MiniMax Code 实测，这是一个很有性格的 Agent。</h3>
+      <p class="summary">花 49 元买了 MiniMax Code 的 Go 套餐，用了几天，最大的印象是这 Agent 很有性格：主动、倔、舍得花时间。three.js 毛线编织农场…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/ai/6490033.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 15:05</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">美国 AI 限制逐条梳理</h3>
+      <p class="summary">从 11 月 3 日中期选举后民主党议员要求暂停先进 AI 说起，把美方的 AI 禁令按前沿模型披露、芯片与算力、数据中心、未成年人和聊天机器人四类逐条梳理，法…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/ai/6490059.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 17:53</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">企业AI转型落不了地？一张清单说清组织侧7步</h3>
+      <p class="summary">AI 转型屡屡碰壁，问题不在工具，而在组织。本文基于实战经验，拆解组织侧 7 步落地清单与自检表，从权力再分配到业务智能体认证，直指 90% 企业 AI 落不了…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/pd/6490135.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 17:54</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">四家主流体检预约平台实测：从首页到预约，需要经过哪些步骤？从产品视角看各平台预约流程的侧重维度</h3>
+      <p class="summary">四家体检预约平台实测对比，从首页分流到订单核对，拆解卫蓝鲸鱼、禾连健康、中康体检网、康康体检网的产品设计差异。谁把履约标签前置？谁在支付前缺失地址？谁用会员卡干…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/evaluating/6490103.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#dc2626">
+      <div class="card-top">
+        <span class="num" style="background:#dc2626">S</span>
+        <span class="date">11月6日 周五 20:25</span>
+        <span class="gtag" style="color:#dc2626;border-color:#dc2626">可复制实操</span>
+      </div>
+      <h3 class="title">3连板新亚制程：公司生产经营基本面未发生重大变化</h3>
+      <p class="summary">36氪获悉，3连板新亚制程披露股票交易异常波动公告，公司生产经营基本面未发生重大变化，公司股票存在市场情绪过热及非理性炒作情形，可能存在回调风险。公司未从事全固…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="36氪快讯">36氪快讯</span>
+        <a class="link" href="https://www.36kr.com/newsflashes/4058250012316801" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月5日 周四 22:00</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">MacBook Pro 能触屏了，但这只是它最小的升级｜附选购指南</h3>
+      <p class="summary">触控向左，算力向右#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="爱范儿">爱范儿</span>
+        <a class="link" href="https://www.ifanr.com/1687989?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月6日 周五 14:47</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">腾讯微视App，靠短剧换了种活法</h3>
+      <p class="summary">微视把短剧做成了第二条产品主线：短剧专区拿到与短视频首页同等权重的资源位，剧单页、热播榜、新剧榜和继续播放一并补齐。这不是加个入口，而是把短视频的自然流量转成短…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/share/6489983.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月6日 周五 15:04</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">Claude Duet主动运行后，企业Agent要把四个边界写进Runtime</h3>
+      <p class="summary">Agent 从等你敲门变成主动巡逻：查应用、按间隔检查账户、发现事项就提醒，关掉应用也能在云端继续跑。难点因此从能不能调用工具，变成什么时候启动、凭什么授权、信…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/ai/6490040.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#ea580c">
+      <div class="card-top">
+        <span class="num" style="background:#ea580c">A</span>
+        <span class="date">11月6日 周五 16:22</span>
+        <span class="gtag" style="color:#ea580c;border-color:#ea580c">高价值洞见</span>
+      </div>
+      <h3 class="title">腾讯阿里字节，又要被DeepSeek吊打了？</h3>
+      <p class="summary">国内AI办公市场，DeepSeek也开始来抢地盘了。 昨晚，DeepSeek Harness公布了一组相当亮眼的数据：上线不到三个月，日活跃用户已经达到154万…</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="人人都是产品经理">人人都是产品经理</span>
+        <a class="link" href="https://www.woshipm.com/ai/6490157.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月4日 周三 17:55</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">拓竹给 3D 打印机装了 9 个头，这次真能打印万物了？</h3>
+      <p class="summary">桌面制造的新物种#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="爱范儿">爱范儿</span>
+        <a class="link" href="https://www.ifanr.com/1687646?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月4日 周三 18:04</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">加油、充电还能加甲醇！吉利银河星耀 6 EF 上市，7.68 万元起</h3>
+      <p class="summary">不挑食。#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="爱范儿">爱范儿</span>
+        <a class="link" href="https://www.ifanr.com/1687688?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月4日 周三 18:06</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">安东内利加冕 F1 最年轻世界冠军，梅赛德斯的十年豪赌拿到了大结果</h3>
+      <p class="summary">一位天才车手的圆梦之旅。#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="爱范儿">爱范儿</span>
+        <a class="link" href="https://www.ifanr.com/1687672?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月4日 周三 23:12</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">一文看懂 2026 中国车市：卷死合资不是胜利，「金九银十」已然消失</h3>
+      <p class="summary">车市的天花板，可能比我们想的更低。#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="爱范儿">爱范儿</span>
+        <a class="link" href="https://www.ifanr.com/1687720?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月5日 周四 10:57</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">Apple 官网排版细节鉴赏</h3>
+      <p class="summary">Apple 独一无二的品牌价值，正是从这些细节中凝聚的。查看全文</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="少数派">少数派</span>
+        <a class="link" href="https://sspai.com/post/115399" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月5日 周四 14:25</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">字节扣子、腾讯元器接连下线：大厂AI产品洗牌清退潮</h3>
+      <p class="summary">扣子企业版最晚2027年底退出，腾讯元器11月9日停服。据不完全统计，大厂与创业公司已有38款AI产品关停或被 [&amp;#8230;]</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="运营派">运营派</span>
+        <a class="link" href="https://www.yunyingpai.com/news/1068737.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月5日 周四 14:44</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">日赚2300万，瑞幸咖啡的好日子又回来了</h3>
+      <p class="summary">外卖大战退潮，瑞幸的利润回来了。Q3营收178.9亿元，Non-GAAP经营利润30.47亿元，同比增长超过5 [&amp;#8230;]</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="运营派">运营派</span>
+        <a class="link" href="https://www.yunyingpai.com/news/1068741.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月5日 周四 15:01</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">AI漫剧这行不养学徒</h3>
+      <p class="summary">AI 漫剧公司还在招抽卡师，实训生月薪一千到两千，能定风格、盯分镜的抽卡师却能拿到五万。同一个行业里，一边在招 [&amp;#8230;]</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="运营派">运营派</span>
+        <a class="link" href="https://www.yunyingpai.com/news/1068747.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月5日 周四 15:11</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">一年获900万下载，AI口语陪练App霸榜印尼，“App工厂”勇闯教育赛道</h3>
+      <p class="summary">土耳其「App工厂」HubX做的AI口语陪练BetterSpeak，一年在双商店拿下916.3万次下载，印尼近 [&amp;#8230;]</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="运营派">运营派</span>
+        <a class="link" href="https://www.yunyingpai.com/news/1068743.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月5日 周四 15:16</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">不用困在厨房也能做出好饭：三十道省事家常蒸菜</h3>
+      <p class="summary">蒸锅真是懒人做饭好帮手。查看全文本文为会员文章，出自《单篇文章》，订阅后可阅读全文。</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="少数派">少数派</span>
+        <a class="link" href="https://sspai.com/prime/story/30-easy-steamed-dishes" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+
+    <article class="card" style="--accent:#2563eb">
+      <div class="card-top">
+        <span class="num" style="background:#2563eb">B</span>
+        <span class="date">11月5日 周四 15:21</span>
+        <span class="gtag" style="color:#2563eb;border-color:#2563eb">一般资讯</span>
+      </div>
+      <h3 class="title">成功拿下“大芒果”！全网进入厉娜大收尾时代</h3>
+      <p class="summary">一句日常表达，只要结尾加上「厉娜」就能全网模仿。《后会友期》上线后连续 8 天登顶，前两期正片播放均超 1.4 [&amp;#8230;]</p>
+      
+      <div class="card-foot">
+        <span class="chip" title="运营派">运营派</span>
+        <a class="link" href="https://www.yunyingpai.com/news/1068745.html" target="_blank" rel="noopener noreferrer">原文 ↗</a>
+      </div>
+    </article>
+    </div>
+  </section>
+<div class="note">未配置 RADAR_API_KEY，当前为关键词评级模式；配置后自动升级为 LLM 智能评级与技能蒸馏。</div>
+</main>
+<footer class="foot">
+  <p>本期共收录 <b>60</b> 条内容信号 · S/A 级已自动沉淀至 skills/ 技能库</p>
+  <p style="margin-top:6px">数据来源：AI HOT / 量子位 / 机器之心 / 36氪 / 少数派 / 虎嗅 · 时间均为北京时间</p>
+</footer>
+<script>
+const navItems=document.querySelectorAll('.nav-item');const map=new Map();
+navItems.forEach(n=>map.set(n.getAttribute('href').slice(1),n));
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){navItems.forEach(n=>n.classList.remove('active'));const t=map.get(x.target.id);if(t)t.classList.add('active');}})},{rootMargin:'-80px 0px -70% 0px',threshold:0});
+document.querySelectorAll('.sec').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
